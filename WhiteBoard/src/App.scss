@@ -1,0 +1,41 @@
+$main-color-header-footer: #adadad;
+
+@mixin header-colorPalette-pattern {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $main-color-header-footer;
+    height: 80px;
+    width: 100vw;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+canvas {
+    cursor: url(../src/Img/circle.png) 4 12, auto;
+}
+
+.main-header {
+    @include header-colorPalette-pattern;
+    position: absolute;
+    box-shadow: inset 0 -2px 2px black;
+
+    h1 {
+        font-size: 44px;
+        color: white;
+    }
+}
+
+#colors-palette {
+    @include header-colorPalette-pattern;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    border-top: 1px solid black;
+    box-shadow:inset 0 2px 8px black;
+
+    li {
+        list-style: none;
+    }
+}
