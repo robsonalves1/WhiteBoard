@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 import Whiteboard from './Components/Whiteboard';
 import './App.scss';
 import './CssReset.css';
 import paintbrushImg from './Img/paintbrush.png';
 import eraserImg from './Img/eraser.png';
+import deleteImg from './Img/delete.png';
 
-//Implementações
-//    - borracha img
-//      - ctrl +, ctrl -, ctrl Z
 
 const colors: string[] = [
     "red",
@@ -17,6 +15,7 @@ const colors: string[] = [
     "orange",
     "pink",
     "brown",
+    "black"
 ];
 
 function App() {
@@ -25,9 +24,10 @@ function App() {
     const [color, setColor] = useState<string>("black");
     const [lineWidth, setLineWidth] = useState<number>(1);
     const [paintOrEraser, setPaintOrEraser] = useState<string>("paint");
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     let num: number = lineWidth;
-    let keyPressed: string= "0";
+    let keyPressed: string= "";
 
     useEffect(() => {
         const handleRezise = () => {
@@ -53,7 +53,6 @@ function App() {
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-
         if (event.key == "+") {
             num++;
             setLineWidth(num);
@@ -63,6 +62,16 @@ function App() {
             setLineWidth(num);
         }
     }
+
+    const handleToastClick = () => {
+        setShowToast(true);
+    };
+
+    const handleToastClose = () => {
+        setShowToast(false);
+    };
+
+    
 
     return (
         <div>
@@ -75,34 +84,46 @@ function App() {
                 color={color}
                 lineWidth={lineWidth}
                 paintOrEraser={paintOrEraser}
-                keyPressed={keyPressed}
             />
 
             <ul id="colors-palette">
                 {
                     colors.map((elem: string, i: number) =>
                     (
-                        <li key={i} onClick={handleColor} style={{ width: "50px", height: "50px", backgroundColor: elem }}></li>
+                        <li key={i} onClick={handleColor} title={elem} style={{ width: "50px", height: "50px", backgroundColor: elem, borderRadius: "50px" }}></li>
                     ))
                 }
-                <li key={7} >
-                    <input type="number" onChange={handleLineWidth} style={{ width: "150px", height: "50px", border: "none", textAlign: 'center', fontSize: "36px" }} value={lineWidth}/>
+                <li
+                    key={7}
+                    title="Increase or decrease the size of your brush or eraser"
+                >
+                    <input type="number" onChange={handleLineWidth} style={{ width: "150px", height: "50px", border: "none", textAlign: 'center', fontSize: "36px", borderRadius: "50px", marginLeft: "150px" }} value={lineWidth} />
                 </li>
-                <div>
+                <div style={{ display: "flex", columnGap: "10px"}}>
+
                     <button
-                        style={{ width: "60px", height: "50px", border: "none", marginRight: "10px" }}
+                        title="Eraser"
+                        style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50px", height: "50px", border: "none", borderRadius: "50px", overflow: "hidden" }}
                         onClick={() => setPaintOrEraser("erase")}    
                     >
-                        <img src={eraserImg} style={{ height: "100%"}} />
+                        <img src={eraserImg} style={{ height: "90%"}} />
                     </button>
                     <button
-                        style={{ width: "60px", height: "50px", border: "none" }}
-                        onClick={() => setPaintOrEraser("paint")}
+                        title="Brush"
+                        style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50px", height: "50px", border: "none", borderRadius: "50px", overflow: "hidden"  }}
+                        onClick={() => setPaintOrEraser("paint")}   
                     >
-                        <img src={paintbrushImg} style={{ height: "100%" }} />
+                        <img src={paintbrushImg} style={{ height: "75%" }} />
+                    </button>
+                    <button
+                        title="Delete your draw"
+                        style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50px", height: "50px", border: "none", borderRadius: "50px", overflow: "hidden" }}
+                        onClick={() => window.location.reload()}
+                    >
+                        <img src={deleteImg} style={{ height: "90%" }} />
                     </button>
                 </div>
-            </ul>
+            </ul>            
         </div>
       );
 }

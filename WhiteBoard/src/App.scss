@@ -13,10 +13,6 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-canvas {
-    cursor: url(../src/Img/circle.png) 4 12, auto;
-}
-
 .main-header {
     @include header-colorPalette-pattern;
     position: absolute;
